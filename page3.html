@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>How-to Guide</title>
+    <!-- code below used for bootstrap -->
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  <!-- viewport is the users screen, and the 2 settings used here is the width of screen of device and initial scale means don't zoom in or out just 100% -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> <!-- css file where you get default styling, coloring and look of different widgets --> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>  <!-- standard jquery library --> 
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>  <!-- bootstrap javascript file --> 
+	<!-- code above used for bootstrap -->
+	<link rel ="stylesheet" href = "style.css" type = "text/css">	
+</head>
+<body>
+
+	<!-- main navigation bar --> 	
+	<nav class="navbar navbar-inverse">  <!-- navbar-default is the styling of the navbar --> 
+		<div class="container-fluid">
+		
+			<!-- Logo Below --> 
+			<div class="navbar-header"> <!-- this lets bootstrap know that this isnt an actual button but just a logo --> 
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainNavBar">  <!-- Navbar toggle button --> 
+					<span class="icon-bar"></span>  <!-- design of button --> 
+					<span class="icon-bar"></span>  <!-- design of button --> 
+					<span class="icon-bar"></span>  <!-- design of button --> 
+				</button>  
+				<a href="index.html" class="navbar-brand">Tutorial Home</a>  <!-- links to home (index) page --> 
+			</div>
+			
+			<!-- Menu Items Below -->
+			<div class="collapse navbar-collapse" id="mainNavBar">
+				<ul class="nav navbar-nav">
+					<li><a href="page2.html">What is an API?</a></li>
+					<li class="active"><a href="page3.html">The New York Times API</a></li>
+					<li><a href="page4.html">Making a Request</a></li>	
+					<li><a href="page5.html">Accessing and Displaying Data</a></li>
+					<li><a href="page6.html">More Examples</a></li>
+					<li><a href="page7.html">Final Thoughts</a></li>
+				</ul>				
+			</div>
+		
+		</div>
+	</nav>
+	
+	
+	<!-- Main Content (below navigation bar) --> 
+	<div class="container">     <!-- class=container-fluid is full screen, class=container is just a fixed width --> 
+		
+		<h1 class="title">The New York Times API</h1> 
+		
+		<!-- a well is a "floating island" that has a boarder and a grey background -->
+		<div class="well">
+			<p>
+				The New York Times API is an API that you can use to request information about articles from the New York Times. Makes sense right? 
+				Lets take a closer look at this API to understand how to navigate its documentation, how to form an API query, get data from 
+				the API, look at the data and then make something happen on the screen in a web page (through the use of JavaScript, HTML and CSS). 
+				To start, glance over the New York Times API webpage <a href="https://developer.nytimes.com/">HERE</a>. 
+			</p>
+			
+			<p>
+				To begin using the New York Times API you need to first request an API key. Wait, an API key? What is that? Basically, if a company 
+				or an organization or a person is opening up their data, they want you to identify yourself when you are asking for the data. So you 
+				have to sign up and get a special key which will identify you. This way the company (or in this case the New York Times) can track how often 
+				you are accessing their data and what you are using their data for. Don't worry, it is free to request an API key and you only have 
+				to supply an email address. Once you enter in your email information an API key will be emailed to you and now you can start using the 
+				New York Times API. The image below is a small screen-shot of the New York Times API web-page and shows you what to click on to request 
+				an API key.
+			</p><br>
+			<center><img src="key.png"></center><br>
+			
+			<p>
+				Now that you have an API key, lets see what the New York Times API has to offer. If you scroll down on the New York Times API web-page, 
+				you can see that there are a lot of different categories that are available to you. Some of these include article search, 
+				most popular, movie reviews and top stories. These different categories are essentially "sub-API's" or different paths within the 
+				larger New York Times API. For simplicity, this tutorial will focus on the article search but it is good to be aware of the fact 
+				that there is more to this API than this one category. 
+				An interesting fact is that the article search in the New York Times API actually goes back to the year 1851. So for example you can 
+				search for all the articles in the New York Times that have the word "outrageous" in them since 1851. To use the article search, click 
+				on the Article Search category on the New York Times API web-page (see image). 
+			</p>
+			
+			<center><img src="article.png"></center><br>
+			
+			<p>
+				Once you click on "Article Search" you will be given some documentation on how the article search works. On this page you 
+				are given two options which both expand to give you more information: "show details" and "try it out". Neither one of these 
+				options are extremely easy to understand for someone at a beginner level so I will attempt to make this as clear as possible for you. 
+				Essentially what you want to do to search for articles is to use a JavaScript function in your web site to make a call to the 
+				New York Times API URL (https://api.nytimes.com/svc/search/v2/articlesearch.json). Along with this URL you will use additional parameters added on to the 
+				URL that corresponds to whatever search criteria that you want to search for. If you click on the "show detials" button while 
+				still on the Article Search page, you will be given information on all of the different kinds of parameters that you can add on 
+				to the URL to make a successful search (see image below). Besides the basic search query word that you use, some other optional parameters include 
+				begin date, end date and sort options. So using these additional parameters you could conduct a search and restrict by only getting 
+				articles from the year 1945 that contain a particular word or you could sort the articles that you get back by a specific order. 
+				For now, lets just stick to conducting an article search based on a specific search query word. 
+			</p><br>
+			
+			<center><img src="parameters.png"></center><br>
+			
+			<p>
+				This sounds confusing so let me give you an example. Lets say that you want to use the New York Times API to search for articles 
+				that contain the word "computer" in them. You would then create a JavaScript function to make a call to the root URL plus the 
+				word that is to be searched for. So the URL that you would make a call to would be:<br><br>
+				<center>https://api.nytimes.com/svc/search/v2/articlesearch.json?q [root URL] + computer [search word] = https://api.nytimes.com/svc/search/v2/articlesearch.json?q=computer </center><br>
+				You are not done yet though. Remember how you had to get an API key? You now have to add on your API key to the end of this URL 
+				to successfully make the call to the API. I will use my API key to show the final URL to use to make the call...<br><br>
+				<center>https://api.nytimes.com/svc/search/v2/articlesearch.json?q=computer&api-key=b79606f1042e40b483c8690d72b21ca3</center><br>
+				You can now use the above URL in your JavaScript code for your website to successfully make a call to the New York Times API 
+				based on the search criteria (in this case it is "computer"). In fact you don't even need to use JavaScript to make this call. 
+				You can simply copy the above URL and paste it into your web browser. Go ahead try it! 
+			</p>
+			
+			<p>
+				If you did in fact copy and paste the URL into your web browser you may have been surprised at the result. 
+				Even though the text that appears on the screen looks like a mess of words, numbers and slashes, there is 
+				in fact an order to the text all over the screen. Once you made the call 
+				to the API by entering in the URL into the browser, the API returned this text that you see on the screen. This text that is 
+				returned from the API is JSON data. <b>JSON</b> data (JavaScript Object Notation) is commonly used in data exchange over the 
+				internet. Similar to working with objects in JavaScript, JSON data is a type of data that contains properties and methods. For 
+				example, the data returned from the New York Times API may contain an "article object". That article object may contain a "headline" 
+				property that contains text for the headline of the article and it may also contain a "snippit" property that contains a text snippit
+				that describes the article. If you look closely at all of the text that is displayed on the screen you can see where some of the article 
+				objects start and where their corresponding headlines and snippits start. You can then take all of this data that is returned from 
+				the New York Times API and use it in your own website that you build. 
+			</p>
+			
+			<p>
+				Simply entering in a URL into a web browser and viewing the result on the screen is not too exciting. 
+				You may be thinking to yourself: I thought the goal of this tutorial is to show 
+				how to use an API to get data from your own website and access or display the returned results within your website. You would 
+				be correct, so lets do that very thing. Let's now take what we now know from this page about how the New York Times API works 
+				and lets actually use JavaScript in a web page to retrieve data from the API. Click on the button below to take the next step 
+				in the tutorial and learn how to make a request to the New York Times API using JavaScript. 
+			</p>
+			<p>
+				<center><a class="btn btn-lg btn-primary" href="page4.html" role="button">Making a Request &raquo;</a></center>
+			</p>
+			
+		</div> 
+		<center>&copy Peter Moldenhauer Feb. 20th 2017 ~ moldenhp@oregonstate.edu</center><br>
+	</div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

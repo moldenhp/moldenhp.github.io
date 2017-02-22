@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>How-to Guide</title>
+    <!-- code below used for bootstrap -->
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  <!-- viewport is the users screen, and the 2 settings used here is the width of screen of device and initial scale means don't zoom in or out just 100% -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> <!-- css file where you get default styling, coloring and look of different widgets --> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>  <!-- standard jquery library --> 
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>  <!-- bootstrap javascript file --> 
+	<!-- code above used for bootstrap -->
+	<link rel ="stylesheet" href = "style.css" type = "text/css">	
+</head>
+<body>
+
+	<!-- main navigation bar --> 	
+	<nav class="navbar navbar-inverse">  <!-- navbar-default is the styling of the navbar --> 
+		<div class="container-fluid">
+		
+			<!-- Logo Below --> 
+			<div class="navbar-header"> <!-- this lets bootstrap know that this isnt an actual button but just a logo --> 
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainNavBar">  <!-- Navbar toggle button --> 
+					<span class="icon-bar"></span>  <!-- design of button --> 
+					<span class="icon-bar"></span>  <!-- design of button --> 
+					<span class="icon-bar"></span>  <!-- design of button --> 
+				</button>  
+				<a href="index.html" class="navbar-brand">Tutorial Home</a>  <!-- links to home (index) page --> 
+			</div>
+			
+			<!-- Menu Items Below -->
+			<div class="collapse navbar-collapse" id="mainNavBar">
+				<ul class="nav navbar-nav">
+					<li><a href="page2.html">What is an API?</a></li>
+					<li><a href="page3.html">The New York Times API</a></li>
+					<li><a href="page4.html">Making a Request</a></li>	
+					<li class="active"><a href="page5.html">Accessing and Displaying Data</a></li>
+					<li><a href="page6.html">More Examples</a></li>
+					<li><a href="page7.html">Final Thoughts</a></li>
+				</ul>				
+			</div>
+		
+		</div>
+	</nav>
+	
+	
+	<!-- Main Content (below navigation bar) --> 
+	<div class="container">     <!-- class=container-fluid is full screen, class=container is just a fixed width --> 
+		
+		<h1 class="title">Accessing and Displaying Data</h1> 
+		
+		<!-- a well is a "floating island" that has a boarder and a grey background -->
+		<div class="well">
+			<p>
+				By this point of the tutorial you should have a basic understanding of what an API is, some of the features  of 
+				the New York Times API and how to make a request using the New York Times API. Now we will look at how you can access 
+				the data that was returned from the API request and then display this data on the screen. A real-world application for 
+				this would be if you wanted to build a "newspaper website". You could have the user enter in the desired search critera 
+				in your website and then you could display the search results formmated in such a manner in which your web page would 
+				appear as an actual newspaper. Lets see how this can be done.<br><br>
+				On the previous page there was a text box in which you could enter text and then submit the text via the Search button. 
+				This request did indeed work and the data that was returned was stored in an object named "response". This object
+				was not displayed on the screen but it did get logged to the console. To view this object in the console you can follow these 
+				next few steps. It should be noted that you will need to be on the previous page (Making a Request) and that you should have 
+				already entered in a word (such as "computer") in the text box and clicked on Search.<br><br>
+				First, right-click anywhere on the web-page and select "Inspect". See the image below...<br><br>
+				<center><img src="inspect.png" class="border"></center><br>
+				Next, you want to want to click on "Console" at the top of the new side-window that opened up after you clicked on Inspect. See 
+				the image below...<br><br>
+				<center><img src="console.png" class="border"></center><br>
+				Finally, click on object to expand different sub-categories that you can click on. See image below...<br><br>
+				<center><img src="object.png" class="border"></center><br>
+				You may have already guessed that the "object" that you just clicked on is the object that contains all of the returned JSON 
+				data from the New York Times. Once you click on Object to expand it, a few more sub-categories appear. One of these categories 
+				is labeled "repsonse". If you then click on "response" it will expand into more options (one of which is the "docs" option). 
+				If you click on the "docs" category you will see that this is made up of an array of 10 different objects of its own. See image 
+				below...<br><br>
+				<center><img src="array.png" class="border"></center><br>
+				You might have already figured out that each of these 10 different objects under "docs" are 10 different articles returned 
+				from the New York Times. Each of these returned articles contain the search word(s) that you initially entered in the text 
+				box from the web page. If you expand this "tree" of data even further by clicking on one of the objects, such as object 0, 
+				you will see a whole bunch of information that is associated with this specific article. There are various sub-categories 
+				such as headline, snippit, word count and web-url.<br><br>
+				Now that you know how to view the different sections of the response that was logged to the console by clicking and expanding 
+				the categories, lets access the same data but with JavaScript through your web page. When we access the data lets also use 
+				JavaScript to display parts of the data to the screen. Look at the code segment below to see how this is done. There is just a 
+				little bit more code added from the examples on the previous page. We will go over all of the new additions so that everything 
+				makes sense.
+			</p><br>
+			<pre>
+	document.getElementById("Search").addEventListener('click', function (event){
+	var req= new XMLHttpRequest();
+	var searchWord = document.getElementById("textBox").value;
+	req.open("GET","https://api.nytimes.com/svc/search/v2/articlesearch.json?q="+ searchWord +"&api-key="+apikey, true);
+	req.addEventListener("load", function(){
+		if(req.status >=200 && req.status < 400){
+			var response = JSON.parse(req.responseText);
+			console.log(response);
+			
+			function gotData(response){
+				var articles = response.response.docs;
+				
+				for (var i = 0; i < articles.length; i++){
+					console.log(articles[i].headline.main);
+					var theHeadline = document.createElement("h1"); 
+					var headlineText = document.createTextNode(articles[i].headline.main);
+					theHeadline.appendChild(headlineText);
+					document.body.appendChild(theHeadline);
+					
+					var articleData = document.createElement("p"); // create p element
+					var snippitText = document.createTextNode(articles[i].snippet);
+					articleData.appendChild(snippitText);
+					document.body.appendChild(articleData);
+				} 
+			}
+			
+			gotData(response);  
+		}
+		else
+			console.log("Error in network request: " + request.statusText);
+		})
+					
+	req.send(null);
+	event.preventDefault();
+	})		
+			</pre><br>
+			
+			<p>
+				We now have our complete request to the New York Times API to get, access and display data based 
+				on whatever the user enters in a text box. This code segment starts by creating an event handler for the "Search" button 
+				that basically says: "When you click the 'Search' button, go and do this particular action". The action that we are refering to 
+				is actually made up of a few smaller actions (discussed on the previous page). Before we get to the new additions, just as a 
+				review we are creating a new XMLHttpRequest and then opening that request as a "GET" request to the specific content that is 
+				desired. As soon as the request loads, then create an object which contains all of the returned data and then log this object 
+				to the console.<br><br>
+				Now for the new additions to the code. Right after logging the "returned data object" to the console, another function is 
+				created that now accesses the data and displays it to the screen. Similar to how you "inspected" the previous web page, clicked on 
+				"console" and traversed the returned object by expanding various sub-categories, in this function we are basically doing the 
+				same thing through JavaScript. However instead of clicking on response and then on docs and then on object 0 to get to the 
+				first article, we are now using the JavaScript code: response.docs.object[0]. Lets look at a smaller piece of this entire code 
+				segment to now understand how to display the data on the screen after you access it...
+			</p><br>
+			
+			<pre>
+	for (var i = 0; i < articles.length; i++){
+		console.log(articles[i].headline.main);
+		var theHeadline = document.createElement("h1"); 
+		var headlineText = document.createTextNode(articles[i].headline.main);
+		theHeadline.appendChild(headlineText);
+		document.body.appendChild(theHeadline);
+					
+		var articleData = document.createElement("p"); // create p element
+		var snippitText = document.createTextNode(articles[i].snippet);
+		articleData.appendChild(snippitText);
+		document.body.appendChild(articleData);
+	}		
+			</pre><br>
+			
+			<p>
+				Bsically, what is happening here is that we are looping through the array of the article data that was returned from the 
+				request. For each article that we loop through, we are accessing the headline of that specific article, we create a new 
+				element in the body of our web page to hold that headline and then we add this elment to the body of our web page so that 
+				can be displayed on the screen. Right after the headline, a snippit of the returned article text is also added to the body 
+				of our web page in the same manner. This is where a basic understanding of the DOM comes in handy. In this example we are 
+				simply displaying the headline and snippit properties of each individual article. Any of the other data such as publication 
+				date or word count could be accessed and displayed on the screen in this same manner. Just remember, the articles that get 
+				returned from the New York Times comes back as an array of data. Each element of the array is one article and each article 
+				has its own unique properties to it. You can access however many articles as you want and whatever categories of each article 
+				that you want as well. Try it out below! Once you click on "Search" then the headlines and text snippits of the articles from 
+				your search criteria will be displayed at the bottom of this web page.
+			</p>
+			
+			<p>
+				Pretty cool right? Click on the button below to advance to the next step in this tutorial where we will cover some other examples 
+				and capabilities that the New York Times API offers. 
+			</p>
+			<p>
+				<center><a class="btn btn-lg btn-primary" href="page6.html" role="button">More Examples &raquo;</a></center>
+			</p><br><br>
+			
+			<form>
+				<fieldset  class = "formBox">
+				<label for ="searchWord">Enter a word or phrase here: </label>
+				<input type = "text" name ="searchWord" id="textBox2"> </input>
+				<input type ="submit" value= "Search" id ="word2" title="Click here to get articles from the New York Times"> </input>
+				</fieldset>
+			</form>
+			
+			<br><p>
+				Once you enter in your search criteria and click "Search", the headlines and text snippits of the returned articles will be 
+				displayed below...
+			</p>
+			
+		</div> 
+		
+	</div>
+
+</body>
+<script src="script2.js"></script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

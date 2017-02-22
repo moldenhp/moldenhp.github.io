@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>How-to Guide</title>
+    <!-- code below used for bootstrap -->
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  <!-- viewport is the users screen, and the 2 settings used here is the width of screen of device and initial scale means don't zoom in or out just 100% -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> <!-- css file where you get default styling, coloring and look of different widgets --> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>  <!-- standard jquery library --> 
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>  <!-- bootstrap javascript file --> 
+	<!-- code above used for bootstrap -->
+	<link rel ="stylesheet" href = "style.css" type = "text/css">	
+</head>
+<body>
+
+	<!-- main navigation bar --> 	
+	<nav class="navbar navbar-inverse">  <!-- navbar-default is the styling of the navbar --> 
+		<div class="container-fluid">
+		
+			<!-- Logo Below --> 
+			<div class="navbar-header"> <!-- this lets bootstrap know that this isnt an actual button but just a logo --> 
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainNavBar">  <!-- Navbar toggle button --> 
+					<span class="icon-bar"></span>  <!-- design of button --> 
+					<span class="icon-bar"></span>  <!-- design of button --> 
+					<span class="icon-bar"></span>  <!-- design of button --> 
+				</button>  
+				<a href="index.html" class="navbar-brand">Tutorial Home</a>  <!-- links to home (index) page --> 
+			</div>
+			
+			<!-- Menu Items Below -->
+			<div class="collapse navbar-collapse" id="mainNavBar">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="page2.html">What is an API?</a></li>
+					<li><a href="page3.html">The New York Times API</a></li>
+					<li><a href="page4.html">Making a Request</a></li>	
+					<li><a href="page5.html">Accessing and Displaying Data</a></li>
+					<li><a href="page6.html">More Examples</a></li>
+					<li><a href="page7.html">Final Thoughts</a></li>
+				</ul>				
+			</div>
+		
+		</div>
+	</nav>
+	
+	
+	<!-- Main Content (below navigation bar) --> 
+	<div class="container">     <!-- class=container-fluid is full screen, class=container is just a fixed width --> 
+		
+		<h1 class="title">What is an API?</h1> 
+		
+		<!-- a well is a "floating island" that has a boarder and a grey background -->
+		<div class="well">
+			<p>
+				API stands for "Application Programming Interface". Let's say you are building a website and you want to include data from 
+				another website (The New York Times) into your own website. The New York Times website is a program that runs on its own 
+				server and your website is a program that runs on your own server (this could just be your laptop or some outside server that
+				you upload your project to). Ultimately, the two servers need to be able to "talk" to each other so that data can be exchanged 
+				from the New York Times to your own website. The two servers need an interface by which they can talk to each other. 
+				This is what an API is. To put it simply, an API is an interface which allows for computers to talk to each other. 
+			</p>
+			<center><img src="api.png"></center><br>
+			<p>
+				The number of different types of API's out there is endless. A good example of an API is social media plug-ins that you may see 
+				on certain websites. This may be a news article that embeds tweets from Twitter or it could be a web page that lets people leave 
+				Facebook comments under it. In this example of social media, both Twitter and Facebook have their own API's that they make 
+				available for people who build their own websites. This makes it easy for these people to integrate Twitter and Facebook features 
+				into their own websites. Check out the list below to get an idea of some other API's that are out there. You can click on each 
+				list item to go directly to that API website. 
+			</p>
+			<ul>
+				<li><a href="https://developers.pinterest.com/docs/getting-started/introduction/?">Pinterest API</a></li>
+				<li><a href="https://www.programmableweb.com/api/wikipedia">Wikipedia API</a></li>
+				<li><a href="https://developers.google.com/maps/">Google Maps API</a></li>
+				<li><a href="https://www.zillow.com/howto/api/APIOverview.htm">Zillow API</a></li>
+				<li><a href="https://www.yelp.com/developers/v2">Yelp API</a></li>
+				<li><a href="https://developer.spotify.com/web-api/">Spotify API</a></li>
+				<li><a href="https://www.petfinder.com/developers/api-docs/">Petfinder API</a></li>
+				<li><a href="https://api.nasa.gov/index.html">NASA API</a></li>
+			</ul>
+			<p>
+				Now that you have a basic idea of what an API is, it is time to look at one API in detail - the New York Times API. Click 
+				on the button below to take the next step and to get a closer look at this API.
+			</p>
+			<p>
+				<center><a class="btn btn-lg btn-primary" href="page3.html" role="button">The New York Times API &raquo;</a></center>
+			</p>
+			
+		</div> 
+		<center>&copy Peter Moldenhauer Feb. 20th 2017 ~ moldenhp@oregonstate.edu</center><br>
+	</div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

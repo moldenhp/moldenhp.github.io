@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>How-to Guide</title>
+    <!-- code below used for bootstrap -->
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  <!-- viewport is the users screen, and the 2 settings used here is the width of screen of device and initial scale means don't zoom in or out just 100% -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> <!-- css file where you get default styling, coloring and look of different widgets --> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>  <!-- standard jquery library --> 
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>  <!-- bootstrap javascript file --> 
+	<!-- code above used for bootstrap -->
+	<link rel ="stylesheet" href = "style.css" type = "text/css">	
+</head>
+<body>
+
+	<!-- main navigation bar --> 	
+	<nav class="navbar navbar-inverse">  <!-- navbar-default is the styling of the navbar --> 
+		<div class="container-fluid">
+		
+			<!-- Logo Below --> 
+			<div class="navbar-header"> <!-- this lets bootstrap know that this isnt an actual button but just a logo --> 
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainNavBar">  <!-- Navbar toggle button --> 
+					<span class="icon-bar"></span>  <!-- design of button --> 
+					<span class="icon-bar"></span>  <!-- design of button --> 
+					<span class="icon-bar"></span>  <!-- design of button --> 
+				</button>  
+				<a href="index.html" class="navbar-brand">Tutorial Home</a>  <!-- links to home (index) page --> 
+			</div>
+			
+			<!-- Menu Items Below -->
+			<div class="collapse navbar-collapse" id="mainNavBar">
+				<ul class="nav navbar-nav">
+					<li><a href="page2.html">What is an API?</a></li>
+					<li><a href="page3.html">The New York Times API</a></li>
+					<li><a href="page4.html">Making a Request</a></li>	
+					<li><a href="page5.html">Accessing and Displaying Data</a></li>
+					<li class="active"><a href="page6.html">More Examples</a></li>
+					<li><a href="page7.html">Final Thoughts</a></li>
+				</ul>				
+			</div>
+		
+		</div>
+	</nav>
+	
+	
+	<!-- Main Content (below navigation bar) --> 
+	<div class="container">     <!-- class=container-fluid is full screen, class=container is just a fixed width --> 
+		
+		<h1 class="title">More Examples</h1> 
+		
+		<!-- a well is a "floating island" that has a boarder and a grey background -->
+		<div class="well">
+			<p>
+				Up to this point in the tutorial we have pretty much looked at just one example of how the New York Times API could be used. 
+				We let someone visiting our web page to enter in a search word and then we used JavaScript to take that search word and make a 
+				request. Once that request was returned back to us we then accessed the data that was returned and we displayed it on the screen. 
+				Lets now expand our knowledge about the New York Times API and see what other options it offers.<br><br>
+				Earlier in this tutorial I pointed it out that the New York Times API allows for multiple search parameters when you make a 
+				request. This means that in addition to the search word "computer", you can also restrict your search in other ways such as articles with 
+				a specific source, a specific publication date or a specific word count. These are just a few of the many different ways that you 
+				can filter and restrict your search results. You can have as many different search parameters as you want to filter the search 
+				results and get back only the articles the pertain most to the search criteria. In the code portion below, there are a few different 
+				examples of making requests with multiple parameters. To save space, I only included the "req.open" line of code for each 
+				example because the rest of the code will remain pretty much the same. Just remember that in these examples we are using 
+				multiple parameters so you will be adding multiple values to the root API URL. You should have a way to initialze these 
+				different values such as by letting the user of your website enter in multiple text boxes in a form. I have added in 
+				comments above each line that briefly describes what each line accomplishes.
+			</p><br>
+			
+			<pre>
+// This line will search for articles with a specific search word and also restrict the search to a specific source
+req.open("GET","https://api.nytimes.com/svc/search/v2/articlesearch.json?q="+ searchWord + "&fq=source:" + theSource + "&api-key=" + apikey, true);
+
+
+// This line will search for articles that are restricted to the specific search word and that are published within the begin and end dates
+req.open("GET","https://api.nytimes.com/svc/search/v2/articlesearch.json?q="+ searchWord + "&begin_date=" + beginDate + "&end_date=" + endDate + "&api-key=" + apikey, true); 
+
+
+// This line will restrict searches base on search word, returns results 20 - 29 and the results are also sorted by oldest to newest
+req.open("GET","https://api.nytimes.com/svc/search/v2/articlesearch.json?q="+ searchWord + "&page=2&sort=oldest" + "&api-key=" + apikey, true);
+			</pre><br>
+			
+			<p>
+				You should note that in the third example of the code above, I stated that the request "returns results 20 - 29". If you 
+				have not already realized, each time you make a request for multiple articles, the New York Times API returns an array of article objects 
+				that are typically about 10 objects long. The New York Times API has a limit on how much data is returned with each call. 
+				You can therefore access more article data (beyond the initial 10) if you make another call with a parameter for page 2 or 
+				page 3 etc. If you look closely in the example above you can see where "&page=2" is embedded in the URL. As a result this 
+				will return the article data beyond the intial array of data that the "page 1" would return.<br><br> 
+				Remember all of the other different "sub-categories" of the New York Times API besides just the article search? You can 
+				look back at "The New York Times API" page of this tutorial to refresh your memory. Lets now take a look at a full code 
+				segment that requests data from another category from the API - specifically the "top stories" category. This code 
+				segment is similar to the previous example where the user enters in the word "computer" and the API returns articles that 
+				contain that search word. Only now with the "top stories" category there will be a search "category" that the user enters 
+				and the API will  
+				return an array of the top stories about that category instead of just an assortment of articles that contain 
+				a specific search word. In the following code segment we are making a request for all of the top stories under the 
+				category of "science". We then access the returned data and display the titles of each article to the screen.
+			</p><br>
+			
+			<pre>
+	document.getElementById("loc").addEventListener('click', function (event){
+	var req= new XMLHttpRequest();
+	var category = "science";
+	req.open("GET","https://api.nytimes.com/svc/topstories/v2/" + category + ".json?" + "api-key=" + apikey, true);
+	req.addEventListener("load", function(){
+		if(req.status >=200 && req.status < 400){
+			var response = JSON.parse(req.responseText);
+			console.log(response);
+			
+			function gotData(response){
+				var articles = response.results;
+				
+				for (var i = 0; i < articles.length; i++){
+					console.log(articles[i].title);
+					var theTitle = document.createElement("h1");  
+					var titleText = document.createTextNode(articles[i].title);
+					theTitle.appendChild(titleText);
+					document.body.appendChild(theTitle);
+				}
+			}
+			gotData(response);
+		}
+		else
+			console.log("Error " + req.statusText);
+	})
+					
+	req.send(null);
+	event.preventDefault();
+})
+			</pre><br>
+			
+			<p>
+				Go ahead and try for yourself some other categories of the New York Times API such as movie reviews and the "most popular" category. 
+				There is a lot that you can do with this API. I have only scratched the surface with the few examples that I have given. 
+				However, from what we have gone over in this tutorial should give you enough of an understanding to explore and code more 
+				complicated requests to the New York Times API. I will end this tutorial by leaving you with some challenges to accomplish 
+				with the this API. If you get stuck, look back at similar calls to the API and read up in the "README" sections of the 
+				New York Times API website. Goodluck and happy coding!<br>
+				<ul>
+					<li>Display on the screen the headlines of all of the articles that contain the word "JavaScript" in them.</li>
+					<li>Let the user of your web page select a year and then get a list of articles from that particular year.</li>
+					<li>Make a request to the New York Times API to look at trends for the frequency a word appears in articles for a 
+						given year. For example, make a request to the API that allows you to determine when the word "computer" 
+						started to get used ofent in articles.</li>
+					<li>Let the user of your web page select a year and then make a request to determine how many times the word "war" is 
+						used in the articles vs. the word "peace".</li>
+					<li>Make a request to the API and then sort the results alphabetically.</li>
+				</ul><br>
+				Congratulations, you have made it through this tutorial about the New York Times API. Click on the button below to see some of 
+				my final thoughts about this API and the overall use of API's in web development. 
+			</p>
+			<p>
+				<center><a class="btn btn-lg btn-primary" href="page7.html" role="button">Final Thoughts &raquo;</a></center>
+			</p>
+			
+		</div> 
+		<center>&copy Peter Moldenhauer Feb. 20th 2017 ~ moldenhp@oregonstate.edu</center><br>
+	</div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

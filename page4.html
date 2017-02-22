@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>How-to Guide</title>
+    <!-- code below used for bootstrap -->
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  <!-- viewport is the users screen, and the 2 settings used here is the width of screen of device and initial scale means don't zoom in or out just 100% -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> <!-- css file where you get default styling, coloring and look of different widgets --> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>  <!-- standard jquery library --> 
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>  <!-- bootstrap javascript file --> 
+	<!-- code above used for bootstrap -->
+	<link rel ="stylesheet" href = "style.css" type = "text/css">	
+</head>
+<body>
+
+	<!-- main navigation bar --> 	
+	<nav class="navbar navbar-inverse">  <!-- navbar-default is the styling of the navbar --> 
+		<div class="container-fluid">
+		
+			<!-- Logo Below --> 
+			<div class="navbar-header"> <!-- this lets bootstrap know that this isnt an actual button but just a logo --> 
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainNavBar">  <!-- Navbar toggle button --> 
+					<span class="icon-bar"></span>  <!-- design of button --> 
+					<span class="icon-bar"></span>  <!-- design of button --> 
+					<span class="icon-bar"></span>  <!-- design of button --> 
+				</button>  
+				<a href="index.html" class="navbar-brand">Tutorial Home</a>  <!-- links to home (index) page --> 
+			</div>
+			
+			<!-- Menu Items Below -->
+			<div class="collapse navbar-collapse" id="mainNavBar">
+				<ul class="nav navbar-nav">
+					<li><a href="page2.html">What is an API?</a></li>
+					<li><a href="page3.html">The New York Times API</a></li>
+					<li class="active"><a href="page4.html">Making a Request</a></li>	
+					<li><a href="page5.html">Accessing and Displaying Data</a></li>
+					<li><a href="page6.html">More Examples</a></li>
+					<li><a href="page7.html">Final Thoughts</a></li>
+				</ul>				
+			</div>
+		
+		</div>
+	</nav>
+	
+	
+	<!-- Main Content (below navigation bar) --> 
+	<div class="container">     <!-- class=container-fluid is full screen, class=container is just a fixed width --> 
+		
+		<h1 class="title">Making a Request</h1> 
+		
+		<!-- a well is a "floating island" that has a boarder and a grey background -->
+		<div class="well">
+			<p>
+				Now that you have a basic understanding on what an API is and how the New York Times API works, it is time to learn how to make 
+				a request to the API using JavaScript from within your own web page. Let's keep using the same example (as was seen on the previous
+				page) of searching the New York Times articles that contain the word "computer" in them. The JavaScript code below is what you would 
+				include in your web page to make this request. 
+			</p>
+			
+			<pre>
+	var req = new XMLHttpRequest();
+	req.open("GET","https://api.nytimes.com/svc/search/v2/articlesearch.json?q=computer&api-key=b79606f1042e40b483c8690d72b21ca3", true);
+	req.addEventListener("load", function(){
+		if(req.status >=200 && req.status < 400){
+			var response = JSON.parse(req.responseText);
+			console.log(response);  
+		}
+		else
+			console.log("Error in network request: " + request.statusText);
+	})	
+	req.send(null);
+			</pre>
+			
+			<p>
+				I know this code looks intimidating but we will go through it line by line. On the first line we are creating an object that 
+				is named "req". This object is assigned a new XMLHttpRequest which is an object that can make an HTTP request and also 
+				return the data it gets from that request. <br><br> On the next line we use the req object and access the open property through the 
+				use of the dot operator. The req.open function opens a connection to a resource to get some data. In this case, 
+				the code is basically saying: "Get some data at the New York Times API resource". Specifically, the resource is the New York Times 
+				API URL in addition to the search word (computer) as well as your API key. 
+				Note that the word "true" at the end of the line indicates that this will be an asynchronous request.<br><br> 
+				On the next line, we are using the "addEventListener" 
+				method of the req object. This method basically says: "when the data requested from the API returns and loads, then do a particular
+				function with the stuff that is returned from the request". The particular function that we want to take place can then be viewed on the next few lines. 
+				First, there needs to be some error checking with the request. The line with the if statement does exactly this. This "error checking if-statement" 
+				checks to make sure that the status of the response is within the 200 to 300 range. Without getting too technical, a status of 
+				anywhere in 200 to 300 means that the request worked. If by any chance the status of the request is not within this range, then 
+				an error message is sent to the console. The lines of code that handle this is the "else-statement" after the initial "if-statement".<br><br>
+				On the following line (right after the if-statement) another object is created named "response" which basically contains all of the returned JSON data from 
+				the request call. It should be noted that the returned data initially comes back as a JSON string so we need to therefore 
+				parse the JSON string and convert it to a JSON object.<br><br>  
+				The console.log line then takes the response object and logs all of the JSON data within the response object to the console. 
+				Finally, now that the request is open and ready, the request to get the data from the New York Times API is actually sent with the req.send method. The send method has 
+				a parameter of null because there is no additional data being sent with the request - we just want to request the data from the 
+				API and that is it. It should be noted that since this is an asynchronous request (not a synchronous request) it will not pause on this 
+				line until the rquest completes. 
+			</p><hr>
+			
+			<p>
+				As if all of this wasnt complicated enough, lets add a just little bit more to the above code. In a real world application of 
+				this API you will most likely not know what specific articles to search for whenever someone visits your website. Therefore, 
+				you should probably not "hard-code" the specific API request that uses the same parameters each time. For example, in all of the 
+				previous examples we have just used the API request to search for all articles containing the word "computer" in them. But what 
+				happens if someone visits your site and doesn't want to view articles about computers? What if this person wants to view articles 
+				about politics or about a specific country? In these situations it would make the most sense to provide the user of your website 
+				a text box that can be used to enter text and then have a search conducted based on whatever was entered in the text box. The 
+				code below is similar to the above code fragement except for the fact that it now has the capability to make a request that 
+				corresponds to the text entered into a text box from your own web page.  
+			</p>
+			
+			<pre>
+	var apikey = "b79606f1042e40b483c8690d72b21ca3";		
+	var req = new XMLHttpRequest();
+	var searchWord = document.getElementById("textBox").value;
+	req.open("GET","https://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + searchWord + "&api-key=" + apikey, true);
+	req.addEventListener("load", function(){
+		if(req.status >=200 && req.status < 400){
+			var response = JSON.parse(req.responseText);
+			console.log(response);  
+		}
+		else
+			console.log("Error in network request: " + request.statusText);
+	})	
+	req.send(null);
+			</pre>
+			
+			<p>
+				Now lets go over the few things that were just added. The first new addition is the creation of the variable "apiKey". 
+				Assigned to this variable is your API key. Makes sense but why bother? You should create a variable that contains your 
+				API key because if you ever let someone else use your source code, you can just have that person enter in their API key 
+				in place of yours in just one spot in the code. If you didn't have a variable for your API key, this other person using 
+				the source code would have to go through your codeand edit the long URL in each request to the API.<br><br>
+				The second (and most imporant) addition that was made in this new code segment is the creation of the variable "searchWord".
+				This variable gets assigned to it the contents of a text box that is in your web page. It is imporant to note that in this 
+				example I gave the text box in my webpage an id of "textBox". Now that we have a variable that contains the value of 
+				whatever the user of your website enters in your text box, we can just add it to the root New York Times API URL. By adding 
+				the root URL with the searchWord variable (as well as your API key too) you now have a dynamic API call that will be different 
+				each time depending on what the user enters in the text box. To better visualize all of this, I created a text box below 
+				which can be used with the JavaScript code to make a request to the New York Times API.
+			</p><br>
+			
+			<form>
+				<fieldset  class = "formBox">
+				<label for ="searchWord">Enter a word or phrase here: </label>
+				<input type = "text" name ="searchWord" id="textBox"> </input>
+				<input type ="submit" value= "Search" id ="word" title="Click here to get articles from the New York Times"> </input>
+				</fieldset>
+			</form>
+			
+			<br><p>
+				I am guessing that you entered text in the text box and clicked on the Search button. But nothing happened...or did it? If you 
+				did this it actually did indeed work. You just cannot see the search results because they were not displayed on the screen but 
+				instead they were logged to the console (if you know how to "inspect" this web page and then view the console you can see this 
+				for yourself). Click on the link below to take the next step in this tutorial and learn how to access and display this data 
+				that was returned from the API request. 
+			</p>
+			
+			<p>
+				<center><a class="btn btn-lg btn-primary" href="page5.html" role="button">Accessing and Displaying Data &raquo;</a></center>
+			</p>
+			
+		</div> 
+		<center>&copy Peter Moldenhauer Feb. 20th 2017 ~ moldenhp@oregonstate.edu</center><br>
+	</div>
+
+</body>
+<script src="script.js"></script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
